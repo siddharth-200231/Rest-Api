@@ -5,21 +5,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <link rel="stylesheet" href="/stylesheets/style.css">
-    <!-- <script src="https://cdn.tailwindcss.com"></script> -->
-
 </head>
 <body>
-    <script src="/javascripts/src.js"></script>
     <div class="container">
         <form action="/create" method="post">
-            <!-- <label for="add">Add Some thing</label> -->
-            <input type="text" id="add" class="" placeholder="Add Anthing!!" name="title">
-            <textarea name="" id="" name="details"></textarea>
+            <input type="text" id="add" class="" placeholder="Add Anything!!" name="title" required>
+            <textarea id="details" placeholder="Details" name="details" required></textarea>
             <input type="submit" value="Create Task" class="btn">
         </form>
     </div>
     <div class="tasks">
-         <%    %>
+        <% tasks.forEach(task => { %>
+            <div class="task"><%= task %></div>
+        <% }) %>
     </div>
 </body>
 </html>

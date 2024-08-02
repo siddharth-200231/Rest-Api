@@ -1,26 +1,34 @@
-const { name } = require("ejs");
 const express = require("express");
-const app = express();
 const path = require("path");
-const fs=require("fs")
+const fs = require("fs");
+const app = express();
+
 app.use(express.json());
 app.set("view engine", "ejs");
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, "public")));
+
 app.get("/", (req, res) => {
-  res.render("index");
+    fs.readFile(path.join(__dirname, "files", "notes.txt"), "utf8", (err, data) => {
+        if (err) {
+            return res.status(500).send("Error reading the file.");
+        }
+        const tasks = data.split(";").filter(task => task.trim() !== "");
+        res.render("index", { tasks });
+    });
 });
-app.get("/users/:name", (req, res) => {
-    let name = req.params.name;
-    res.send(`Hello ${name}`);
+
+app.post("/create", (req, res) => {
+    const { title, details } = req.body;
+    const content = `${title} ${details}; `;
+    fs.appendFile(path.join(__dirname, "files", "notes.txt"), content, (err) => {
+        if (err) {
+            return res.status(500).send("Error writing to the file.");
+        }
+        res.redirect("/");
+    });
 });
-app.post("/create",(req,res)=>{
-  fs.writeFile("./files/notes,txt",`${req.body.title} \n  ${req.body.details}`,(err)=>{
-    if(!err){
-      console.log("succesffully writtem")
-    }
-  })
-})
+
 app.listen(3000, () => {
-  console.log("Its running");
+    console.log("Server is running on port 3000");
 });
