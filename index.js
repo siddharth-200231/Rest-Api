@@ -14,7 +14,13 @@ app.get("/users/:name", (req, res) => {
     let name = req.params.name;
     res.send(`Hello ${name}`);
 });
-
+app.post("/create",(req,res)=>{
+  fs.writeFile("./files/notes,txt",`${req.body.title} \n  ${req.body.details}`,(err)=>{
+    if(!err){
+      console.log("succesffully writtem")
+    }
+  })
+})
 app.listen(3000, () => {
   console.log("Its running");
 });
